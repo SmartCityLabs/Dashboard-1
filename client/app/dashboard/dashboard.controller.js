@@ -4,6 +4,9 @@ function razlikaCasov($cas1, $cas2) {
     var datum1 = new Date($cas1);
     var datum2 = new Date($cas2);
     var razlika = Math.abs(datum1 - datum2) * 1.66666667 * Math.pow(10, -5);
+    //console.log(" Prvi cas:  ", $cas1, datum1);
+    //console.log(" Drugi cas: ", $cas2, datum2);
+    //console.log(razlika);
     return razlika;
 }
 
