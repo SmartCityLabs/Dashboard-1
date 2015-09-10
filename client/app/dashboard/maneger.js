@@ -103,7 +103,6 @@ function Manager($scope, $http) {
             responseReservationHistory.forEach(function (rezervacija) {
               var statusRezervacije = rezervacija["status"];
               //console.log(statusRezervacije);
-              //if (statusRezervacije != "No Show" && statusRezervacije != "Cancelled" && statusRezervacije != "Deleted") {
               if (rezervacija["checkOutTime"] && rezervacija["checkInTime"]) {
                 //console.log(" Status rezervacije: ", ime, " : ", statusRezervacije);
                 //console.log(" CheckOutTime ", rezervacija["checkOutTime"]);
@@ -113,32 +112,28 @@ function Manager($scope, $http) {
                   vizData3.cas += razlikaCasov(rezervacija["checkOutTime"], rezervacija["checkInTime"]);
                   vizData3.casStevec += 1;
                 }
-
                 if (id_lokacije === rezervacija["dropOffLocationID"]) {
                   //console.log("DropOffLocation ID: ", id_lokacije, rezervacija["dropOffLocationID"]);
-                  myObject2.checkinTimers[myObject2.checkinTimers.length] = rezervacija["checkInTime"];
+                  myObject2.checkinTimers.push(rezervacija["checkInTime"]);
                 } else if (id_lokacije === rezervacija["pickUpLocationID"]["_id"]) {
                   //console.log("PickUpLocation ID: ", id_lokacije, rezervacija["pickUpLocationID"]["_id"]);
-                  myObject2.checkoutTimers[myObject2.checkoutTimers.length] = rezervacija["checkOutTime"];
+                  myObject2.checkoutTimers.push(rezervacija["checkOutTime"]);
                 }
 
-                // da fak is this?
-                var bool = true;
-                for (c = 0; c < vizData2.length; c++) {
-                  if (vizData2[c].id_lokacije === id_lokacije) {
-                    bool = false;
-                  }
-                }
-                if (bool) {
-                  vizData2[vizData2.length] = myObject2;
+                if (vizData2.indexOf(myObject2) === -1) {
+                  vizData2.push(myObject2);
                 }
               }
             });
-            vizData1[vizData1.length] = myObject1;
-
+            vizData1.push(myObject1);
 
             // končani podatki sedaj, vstavi podatke v html
             if (numberRunningRequests === 0) {
+
+              console.log("\n\nPrva vizualizacija: ", vizData1);
+              console.log("Druga vizualizacija: ", vizData2);
+              console.log("Tretja vizualizacija: ", vizData3);
+              console.log("\n\n");
 
               $(
                 '<nav class="navbar navbar-default">' +
@@ -188,12 +183,6 @@ function Manager($scope, $http) {
                   skupni_podatki2.checkoutTimers.push(tren3);
                 });
               });
-
-              console.log("Prva vizualizacija: ", vizData1);
-              console.log("Druga vizualizacija: ", vizData2);
-              console.log("Tretja vizualizacija: ", vizData3);
-              console.log("\n");
-
 
               $('<div id="opis1" style="text-align: center" class="col-sm-6"> Cars status on location: </div>' +
                 '<div style="align-content: center;" id="opis2" class="col-sm-6"><ul class="legend">' +
