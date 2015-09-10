@@ -51,10 +51,14 @@ function Manager($scope, $http) {
 
           avto.forEach(function (avtoX) {
             var name = avtoX["carModelID"]["name"];
-            vizData3.pot += parseInt(avtoX["odometer"]);
-            vizData3.potStevec += 1;
-            vizData3.cistoca += parseInt(avtoX["cleanliness"]);
-            vizData3.cistocaStevec += 1;
+            if(parseInt(avtoX["odometer"])){
+              vizData3.pot += parseInt(avtoX["odometer"]);
+              vizData3.potStevec += 1;
+            }
+            if(parseInt(avtoX["cleanliness"])){
+              vizData3.cistoca += parseInt(avtoX["cleanliness"]);
+              vizData3.cistocaStevec += 1;
+            }
             var baterija = parseInt(avtoX["batteryChargeLevel"]);
             if (baterija >= 30) {
               var status = avtoX["status"];
@@ -97,21 +101,25 @@ function Manager($scope, $http) {
 
             responseReservationHistory.forEach(function (rezervacija) {
               var statusRezervacije = rezervacija["status"];
-              if (statusRezervacije != "No Show" && statusRezervacije != "Cancelled" && statusRezervacije != "Deleted") {
+              if (rezervacija["checkOutTime"] && rezervacija["checkInTime"]) {
                 //console.log(" Status rezervacije: ", statusRezervacije);
                 //console.log(" CheckOutTime ", rezervacija["checkOutTime"]);
                 //console.log(" CheckInTime  ", rezervacija["checkInTime"]);
                 var razlika_casov = razlikaCasov(rezervacija["checkOutTime"], rezervacija["checkInTime"]);
-                if(razlika_casov){
+                if (razlika_casov) {
                   vizData3.cas += razlikaCasov(rezervacija["checkOutTime"], rezervacija["checkInTime"]);
                   vizData3.casStevec += 1;
                 }
 
                 if (id_lokacije === rezervacija["dropOffLocationID"]) {
+                  //console.log("DropOffLocation ID: ", id_lokacije, rezervacija["dropOffLocationID"]);
                   myObject2.checkinTimers[myObject2.checkinTimers.length] = rezervacija["checkInTime"];
                 } else if (id_lokacije === rezervacija["pickUpLocationID"]["_id"]) {
+                  //console.log("PickUpLocation ID: ", id_lokacije, rezervacija["pickUpLocationID"]["_id"]);
                   myObject2.checkoutTimers[myObject2.checkoutTimers.length] = rezervacija["checkOutTime"];
                 }
+
+                // da fak is this?
                 var bool = true;
                 for (c = 0; c < vizData2.length; c++) {
                   if (vizData2[c].id_lokacije === id_lokacije) {
@@ -121,12 +129,14 @@ function Manager($scope, $http) {
                 if (bool) {
                   vizData2[vizData2.length] = myObject2;
                 }
+
+
               }
             });
-
-
             vizData1[vizData1.length] = myObject1;
 
+
+            // končani podatki sedaj, vstavi podatke v html
             if (numberRunningRequests === 0) {
 
               $(
