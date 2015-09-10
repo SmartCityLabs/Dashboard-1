@@ -1,0 +1,55 @@
+<style type="text/css">
+  body {
+  background-color: #eee;
+}
+</style>
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1>EDIT 2015</h1>
+    <p class="lead">Education for Innovative Thinkers</p>
+    <!--<img src="assets/images/edit_logo.jpg" alt="I'm Yeoman">-->
+  </div>
+</header>
+<div class="container">
+
+  <div class="row">
+    <div class="col-sm-12" align="center">
+      <h1>Login</h1>
+    </div>
+    <div class="col-sm-12">
+      <form class="form-login" name="form" ng-submit="login(form)" novalidate>
+
+        <div class="form-group">
+          <label for="inputEmail" class="sr-only">Email</label>
+
+          <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" ng-model="user.email" required autofocus>
+        </div>
+        <div class="form-group has-error">
+          <p class="help-block" ng-show="form.email.$error.required && submitted">
+             Please enter your email.
+          </p>
+          <p class="help-block" ng-show="form.email.$error.email && submitted">
+             Please enter a valid email.
+          </p>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" id="inputPassword" name="password" class="form-control" placeHolder="Password" ng-model="user.password" required>
+        </div>
+        <div class="form-group has-error">
+          <p class="help-block" ng-show="form.password.$error.required && submitted">
+            Please enter your password.
+          </p>
+          <p class="help-block">{{ errors.other }}</p>
+        </div>
+        <br>
+        <div class="form-group">
+          <button class="btn btn-lg btn-primary btn-block" type="submit">
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>

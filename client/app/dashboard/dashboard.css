@@ -1,0 +1,133 @@
+.thing-form {
+    margin: 20px 0;
+}
+
+#banner {
+    border-bottom: none;
+    margin-top: -20px;
+}
+
+#banner h1 {
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.hero-unit {
+    position: relative;
+    padding: 30px 15px;
+    color: #F5F5F5;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    background: #4393B9;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 70px;
+    border-top: 1px solid #E5E5E5;
+}
+
+#visualisation1 {
+    height: 500px;
+     width: 100%;
+}
+
+#visualisation2 {
+    width: 100%;
+}
+
+#visualisation3 {
+    width: 100%;
+}
+
+text {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.skrij{
+    display: none;
+}
+
+.col-sm-4{
+    vertical-align: top;
+    font-weight: bold;
+}
+
+.legend {
+    list-style: none;
+}
+
+.legend li {
+    float: left; margin-right: 10px;
+}
+.legend span {
+    border: 1px solid #ccc;
+    float: left;
+    width: 12px;
+    height: 12px;
+    margin-top: 4px;
+}
+.legend .checkin  {
+    background-color: #82AFC5;
+}
+.legend .checkout{
+    background-color: #C45454;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color: #4393B9;
+    color: white;
+    cursor: pointer;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    color: white;
+    background: #4393B9;
+}
+
+
+/* NOVA KODA */
+
+.legend2{
+    margin-bottom:76px;
+    display:inline-block;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+.legend2 td{
+    padding:4px 5px;
+    vertical-align:bottom;
+}
+.legendFreq, .legendPerc{
+    align:right;
+    width:50px;
+}
+
+/* nepreverjeno */
+
+path {  stroke: #fff; }
+path:hover {  opacity:1; }
+
+.axis {  font: 10px sans-serif; }
+.legend tr{    border-bottom:1px solid grey; }
+.legend tr:first-child{    border-top:1px solid grey; }
+
+#main{
+
+    margin-left: 100px;
+
+}
+
+
+
