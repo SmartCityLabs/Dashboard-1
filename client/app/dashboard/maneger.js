@@ -176,11 +176,11 @@ function Manager($scope, $http) {
               });
 
               vizData2.forEach(function (tren) {
-                tren.checkinTimers.forEach(function (tren2) {
-                  skupni_podatki2.checkinTimers.push(tren2);
+                tren.checkinTimers.forEach(function (tren) {
+                  skupni_podatki2.checkinTimers.push(tren);
                 });
-                tren.checkoutTimers.forEach(function (tren3) {
-                  skupni_podatki2.checkoutTimers.push(tren3);
+                tren.checkoutTimers.forEach(function (tren) {
+                  skupni_podatki2.checkoutTimers.push(tren);
                 });
               });
 
@@ -191,6 +191,8 @@ function Manager($scope, $http) {
                 '</ul>' +
                 '</div>').appendTo("#visualisation1");
 
+
+              // vstavi skupne podatke
               $('ul.nav > li').removeClass('active');
               $('<li class="active"><a onclick=prikazi(0)>' + skupni_podatki1.imeLokacije + '</a></li>').appendTo("#seznamLokacij");
               $('<div class="skrij" class="col-sm-12" id="section0"></div>').appendTo("#visualisation1");
@@ -199,6 +201,7 @@ function Manager($scope, $http) {
               StolpicniGraf("#stolpGraf0", skupni_podatki2);
               $("#section0").show();
 
+              // vstavi podatke po postajah
               for (ii = 0; ii < vizData1.length; ii++) {
                 $('<li><a onclick=prikazi(' + parseInt(ii + 1) + ')>' + vizData1[ii].imeLokacije + '</a></li>').appendTo("#seznamLokacij");
                 $('<div class="skrij" class="col-sm-12" id="section' + parseInt(ii + 1) + '"></div>').appendTo("#visualisation1");
@@ -207,7 +210,7 @@ function Manager($scope, $http) {
                 StolpicniGraf("#stolpGraf" + parseInt(ii + 1), vizData2[ii]);
               }
 
-
+              // tretje vizualizacije za vse postaje
               $('<div id="dig1" class="col-sm-4" class="clock";>Average rent time: </div><div id="dig3" class="col-sm-4" class="clock">Average rent distance: </div><div id="dig2" class="col-sm-4" class="clock">Level of cleanliness: </div>').appendTo("#visualization3");
               $("#dig1").append('<canvas id="display0" width="120" height="34"></canvas>in minutes.');
               $("#dig2").append('<canvas id="display1" width="120" height="34"></canvas>out of 5.');
