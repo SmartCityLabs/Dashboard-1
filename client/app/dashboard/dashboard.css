@@ -42,10 +42,6 @@
     width: 100%;
 }
 
-text {
-    font: 10px sans-serif;
-}
-
 .axis path,
 .axis line {
     fill: none;
@@ -119,14 +115,16 @@ text {
 path {  stroke: #fff; }
 path:hover {  opacity:1; }
 
+.yaxis {
+  font: 10px sans-serif;
+}
+
 .axis {  font: 10px sans-serif; }
 .legend tr{    border-bottom:1px solid grey; }
 .legend tr:first-child{    border-top:1px solid grey; }
 
 #main{
-
     margin-left: 100px;
-
 }
 
 
