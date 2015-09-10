@@ -20,15 +20,19 @@ function StolpicniGraf(pos, data) {
     width = 800 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
+  // X časovna os
   var xLabels = [];
   var sedaj = new Date();
-  for (i = 1; i <= 48; i++) {
+  for (i = 0; i <= 47; i++) {
+    var t = new Date(sedaj - i * 1800000);
     if (i % 2 === 0) {
-      xLabels[xLabels.length] = new Date(sedaj - i * 1800000).toTimeString().split(" ")[0].substring(0, 5);
+      var xCas = new Date(sedaj - i * 1800000);
+      xLabels.push(xCas.getHours()+":"+xCas.getMinutes());
     } else {
-      xLabels[xLabels.length] = "";
+      xLabels.push("");
     }
   }
+  xLabels.reverse();
 
   var x = d3.scale.ordinal()
     .domain(d3.range(m))
@@ -191,10 +195,12 @@ function StolpicniGraf(pos, data) {
     casi.forEach(function (date) {
       var preteklicCas = razlikaCasov(currentDate, date);
 
+      /*
       console.log("\nČASI TEST:");
       console.log("Trenutni cas: ", currentDate);
       console.log("Podatni cas: ", date);
       console.log("Razlika v urah: ", preteklicCas / 60 / 24)
+      */
 
       if (preteklicCas <= 1440) { // minut v dnevu
         vrni.push([preteklicCas, date]);
@@ -208,6 +214,10 @@ function StolpicniGraf(pos, data) {
   function podatkiVgraf(data) {
     var checkOut24 = urediCas(data.checkoutTimers);
     var checkIn24 = urediCas(data.checkinTimers);
+
+    console.log("CheckOut časi: ",checkOut24);
+    console.log("CheckIn časi: ", checkIn24);
+
     var checkOutDict = [];
     var checkInDict = [];
 
@@ -215,6 +225,7 @@ function StolpicniGraf(pos, data) {
       checkOutDict.push({x: j, y: 0, y0: 0});
       checkInDict.push({x: j, y: 0, y0: 0});
     }
+
     for (i = 0; i < checkOut24.length; i++) {
       var xos = Math.round((parseInt(checkOut24[i][0]) / 30));
       for (j = 0; j < checkOutDict.length; j++) {
