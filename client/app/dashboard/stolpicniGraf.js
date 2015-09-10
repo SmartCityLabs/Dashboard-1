@@ -27,7 +27,7 @@ function StolpicniGraf(pos, data) {
     var t = new Date(sedaj - i * 1800000);
     if (i % 2 === 0) {
       var xCas = new Date(sedaj - i * 1800000);
-      xLabels.push(xCas.getHours()+":"+xCas.getMinutes());
+      xLabels.push(("0" + xCas.getHours()).slice(-2) + ":" + ("0" + xCas.getMinutes()).slice(-2) );
     } else {
       xLabels.push("");
     }
@@ -121,9 +121,6 @@ function StolpicniGraf(pos, data) {
     else transitionStacked();
   }
 
-  //transitionGrouped();
-  //transitionStacked();
-
   function transitionGrouped() {
     y.domain([0, yGroupMax]);
 
@@ -196,16 +193,16 @@ function StolpicniGraf(pos, data) {
       var preteklicCas = razlikaCasov(currentDate, date);
 
       /*
-      console.log("\nČASI TEST:");
-      console.log("Trenutni cas: ", currentDate);
-      console.log("Podatni cas: ", date);
-      console.log("Razlika v urah: ", preteklicCas / 60 / 24)
-      */
+       console.log("\nČASI TEST:");
+       console.log("Trenutni cas: ", currentDate);
+       console.log("Podatni cas: ", date);
+       console.log("Razlika v urah: ", preteklicCas / 60 / 24)
+       */
 
       if (preteklicCas <= 1440) { // minut v dnevu
         vrni.push([preteklicCas, date]);
       } else {
-        vrni.push([preteklicCas, date]);
+        //vrni.push([preteklicCas, date]);
       }
     });
     return vrni;
@@ -215,7 +212,7 @@ function StolpicniGraf(pos, data) {
     var checkOut24 = urediCas(data.checkoutTimers);
     var checkIn24 = urediCas(data.checkinTimers);
 
-    console.log("CheckOut časi: ",checkOut24);
+    console.log("CheckOut časi: ", checkOut24);
     console.log("CheckIn časi: ", checkIn24);
 
     var checkOutDict = [];
@@ -227,7 +224,7 @@ function StolpicniGraf(pos, data) {
     }
 
     for (i = 0; i < checkOut24.length; i++) {
-      var xos = Math.round((parseInt(checkOut24[i][0]) / 30));
+      var xos = 47 - Math.round((parseInt(checkOut24[i][0]) / 30)); // zrcali
       for (j = 0; j < checkOutDict.length; j++) {
         if (checkOutDict[j].x === xos) {
           checkOutDict[j].y += 1;
@@ -236,13 +233,14 @@ function StolpicniGraf(pos, data) {
       }
     }
     for (i = 0; i < checkIn24.length; i++) {
-      var xos = Math.round((parseInt(checkIn24[i][0]) / 30));
+      var xos = 47 - Math.round((parseInt(checkIn24[i][0]) / 30));
       for (j = 0; j < checkInDict.length; j++) {
         if (checkInDict[j].x === xos) {
           checkInDict[j].y += 1;
         }
       }
     }
+
     return [checkOutDict, checkInDict];
   }
 }
