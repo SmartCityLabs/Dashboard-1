@@ -26,7 +26,6 @@ function Manager($scope, $http) {
       numberRunningRequests++;
       $http.get("https://maas-testapi.comtrade.com/api/locations/" + id_lokacije).success(function (lokacija_podatki) {
         numberRunningRequests--;
-        //console.log("Podatki o lokaciji: ",lokacija_podatki);
 
         var ime = lokacija_podatki["name"];
         var myObject2 = {};
@@ -36,10 +35,12 @@ function Manager($scope, $http) {
         myObject2.checkinTimers = [];
         var parkirna_mesta = lokacija_podatki["parkingPlaces"];
 
+        //console.log("Podatki o lokaciji: ", ime, " : ", lokacija_podatki);
+
         numberRunningRequests++;
         $http.get("https://maas-testapi.comtrade.com/api/locations/" + id_lokacije + "/cars?list=all").success(function (avto) {
           numberRunningRequests--;
-          //console.log("Avtomobili na lokaciji: ",avto);
+          //console.log("Avtomobili na lokaciji: ", ime ," : ",avto);
 
           var avtomobili = avto.length;
           var smartPolnjenje = 0;
@@ -51,11 +52,11 @@ function Manager($scope, $http) {
 
           avto.forEach(function (avtoX) {
             var name = avtoX["carModelID"]["name"];
-            if(parseInt(avtoX["odometer"])){
+            if (parseInt(avtoX["odometer"])) {
               vizData3.pot += parseInt(avtoX["odometer"]);
               vizData3.potStevec += 1;
             }
-            if(parseInt(avtoX["cleanliness"])){
+            if (parseInt(avtoX["cleanliness"])) {
               vizData3.cistoca += parseInt(avtoX["cleanliness"]);
               vizData3.cistocaStevec += 1;
             }
@@ -101,8 +102,10 @@ function Manager($scope, $http) {
 
             responseReservationHistory.forEach(function (rezervacija) {
               var statusRezervacije = rezervacija["status"];
+              //console.log(statusRezervacije);
+              //if (statusRezervacije != "No Show" && statusRezervacije != "Cancelled" && statusRezervacije != "Deleted") {
               if (rezervacija["checkOutTime"] && rezervacija["checkInTime"]) {
-                //console.log(" Status rezervacije: ", statusRezervacije);
+                //console.log(" Status rezervacije: ", ime, " : ", statusRezervacije);
                 //console.log(" CheckOutTime ", rezervacija["checkOutTime"]);
                 //console.log(" CheckInTime  ", rezervacija["checkInTime"]);
                 var razlika_casov = razlikaCasov(rezervacija["checkOutTime"], rezervacija["checkInTime"]);
@@ -129,8 +132,6 @@ function Manager($scope, $http) {
                 if (bool) {
                   vizData2[vizData2.length] = myObject2;
                 }
-
-
               }
             });
             vizData1[vizData1.length] = myObject1;
@@ -168,8 +169,7 @@ function Manager($scope, $http) {
                 checkinTimers: []
               };
 
-              for (j = 0; j < vizData1.length; j++) {
-                var tren = vizData1[j];
+              vizData1.forEach(function (tren) {
                 skupni_podatki1.avtomobili += tren.avtomobili;
                 skupni_podatki1.parkirnamesta += tren.parkirnamesta;
                 skupni_podatki1.polnjenjeSmart += tren.polnjenjeSmart;
@@ -178,17 +178,22 @@ function Manager($scope, $http) {
                 skupni_podatki1.prostiZoe += tren.prostiZoe;
                 skupni_podatki1.reservedSmart += tren.reservedSmart;
                 skupni_podatki1.reservedZoe += tren.reservedZoe;
-              }
+              });
 
-              for (j = 0; j < vizData2.length; j++) {
-                var tren = vizData2[j];
-                for (ja = 0; ja < tren.checkinTimers.length; ja++) {
-                  skupni_podatki2.checkinTimers[skupni_podatki2.checkinTimers.length] = tren.checkinTimers[ja];
-                }
-                for (jb = 0; jb < tren.checkoutTimers.length; jb++) {
-                  skupni_podatki2.checkoutTimers[skupni_podatki2.checkoutTimers.length] = tren.checkoutTimers[jb];
-                }
-              }
+              vizData2.forEach(function (tren) {
+                tren.checkinTimers.forEach(function (tren2) {
+                  skupni_podatki2.checkinTimers.push(tren2);
+                });
+                tren.checkoutTimers.forEach(function (tren3) {
+                  skupni_podatki2.checkoutTimers.push(tren3);
+                });
+              });
+
+              console.log("Prva vizualizacija: ", vizData1);
+              console.log("Druga vizualizacija: ", vizData2);
+              console.log("Tretja vizualizacija: ", vizData3);
+              console.log("\n");
+
 
               $('<div id="opis1" style="text-align: center" class="col-sm-6"> Cars status on location: </div>' +
                 '<div style="align-content: center;" id="opis2" class="col-sm-6"><ul class="legend">' +
@@ -205,12 +210,12 @@ function Manager($scope, $http) {
               StolpicniGraf("#stolpGraf0", skupni_podatki2);
               $("#section0").show();
 
-              for (i = 0; i < vizData1.length; i++) {
-                $('<li><a onclick=prikazi(' + parseInt(i + 1) + ')>' + vizData1[i].imeLokacije + '</a></li>').appendTo("#seznamLokacij");
-                $('<div class="skrij" class="col-sm-12" id="section' + parseInt(i + 1) + '"></div>').appendTo("#visualisation1");
-                $('<div style="margin-top: 100px;" id="mehurcki' + parseInt(i + 1) + '" class="col-sm-5"></div><div vertical-align="middle" id="stolpGraf' + parseInt(i + 1) + '" class="col-sm-6"></div>').appendTo('#section' + parseInt(i + 1));
-                Bubble("#mehurcki" + parseInt(i + 1), vizData1[i]);
-                StolpicniGraf("#stolpGraf" + parseInt(i + 1), vizData2[i]);
+              for (ii = 0; ii < vizData1.length; ii++) {
+                $('<li><a onclick=prikazi(' + parseInt(ii + 1) + ')>' + vizData1[ii].imeLokacije + '</a></li>').appendTo("#seznamLokacij");
+                $('<div class="skrij" class="col-sm-12" id="section' + parseInt(ii + 1) + '"></div>').appendTo("#visualisation1");
+                $('<div style="margin-top: 100px;" id="mehurcki' + parseInt(ii + 1) + '" class="col-sm-5"></div><div vertical-align="middle" id="stolpGraf' + parseInt(ii + 1) + '" class="col-sm-6"></div>').appendTo('#section' + parseInt(ii + 1));
+                Bubble("#mehurcki" + parseInt(ii + 1), vizData1[ii]);
+                StolpicniGraf("#stolpGraf" + parseInt(ii + 1), vizData2[ii]);
               }
 
 
