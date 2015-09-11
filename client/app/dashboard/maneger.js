@@ -104,6 +104,9 @@ function Manager($scope, $http) {
               var statusRezervacije = rezervacija["status"];
               //console.log(statusRezervacije);
               if (rezervacija["checkOutTime"] && rezervacija["checkInTime"]) {
+                //console.log(rezervacija);
+                //console.log(" Contract: " + rezervacija["contract"]);
+                //console.log(" this ID: " + id_lokacije, rezervacija["dropOffLocationID"]["_id"], rezervacija["pickUpLocationID"]["_id"])
                 //console.log(" Status rezervacije: ", ime, " : ", statusRezervacije);
                 //console.log(" CheckOutTime ", rezervacija["checkOutTime"]);
                 //console.log(" CheckInTime  ", rezervacija["checkInTime"]);
@@ -112,7 +115,7 @@ function Manager($scope, $http) {
                   vizData3.cas += razlikaCasov(rezervacija["checkOutTime"], rezervacija["checkInTime"]);
                   vizData3.casStevec += 1;
                 }
-                if (id_lokacije === rezervacija["dropOffLocationID"]) {
+                if (id_lokacije === rezervacija["dropOffLocationID"]["_id"]) {
                   //console.log("DropOffLocation ID: ", id_lokacije, rezervacija["dropOffLocationID"]);
                   myObject2.checkinTimers.push(rezervacija["checkInTime"]);
                 } else if (id_lokacije === rezervacija["pickUpLocationID"]["_id"]) {
@@ -127,13 +130,14 @@ function Manager($scope, $http) {
             });
             vizData1.push(myObject1);
 
-            // končani podatki sedaj, vstavi podatke v html
             if (numberRunningRequests === 0) {
 
+              /*
               console.log("\n\nPrva vizualizacija: ", vizData1);
               console.log("Druga vizualizacija: ", vizData2);
               console.log("Tretja vizualizacija: ", vizData3);
               console.log("\n\n");
+              */
 
               $(
                 '<nav class="navbar navbar-default">' +

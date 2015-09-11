@@ -10,11 +10,11 @@ function StolpicniGraf(pos, data) {
       return d.y;
     });
   }),
-    yStackMax = d3.max(layers, function (layer) {
-      return d3.max(layer, function (d) {
-        return d.y0 + d.y;
-      });
+  yStackMax = d3.max(layers, function (layer) {
+    return d3.max(layer, function (d) {
+      return d.y0 + d.y;
     });
+  });
 
   var margin = {top: 20, right: 0, bottom: 20, left: 20},
     width = 800 - margin.left - margin.right,
@@ -107,24 +107,26 @@ function StolpicniGraf(pos, data) {
     .attr("class", "yaxis")
     .call(yAxis);
 
+  /*
   d3.selectAll("#zagraf").on("change", change);
 
   var timeout = setTimeout(function () {
     d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
   }, 3000);
 
+
   function change() {
     var vall = $("input[name=mode]:checked", "#zagraf").val();
-    console.log(vall);
     clearTimeout(timeout);
     if (vall === "grouped") transitionGrouped();
     else transitionStacked();
   }
+  */
 
   function transitionGrouped() {
     y.domain([0, yGroupMax]);
 
-    d3.select(".yaxis").remove();
+    //d3.select(".yaxis").remove();
 
     svg.append("g")
       .attr("class", "yaxis")
@@ -148,6 +150,7 @@ function StolpicniGraf(pos, data) {
       });
   }
 
+  /*
   function transitionStacked() {
     y.domain([0, yStackMax]);
 
@@ -174,6 +177,7 @@ function StolpicniGraf(pos, data) {
       })
       .attr("width", x.rangeBand());
   }
+  */
 
 
   /*    UREDI TELE FUNKCIJE    */
@@ -212,9 +216,6 @@ function StolpicniGraf(pos, data) {
     var checkOut24 = urediCas(data.checkoutTimers);
     var checkIn24 = urediCas(data.checkinTimers);
 
-    console.log("CheckOut časi: ", checkOut24);
-    console.log("CheckIn časi: ", checkIn24);
-
     var checkOutDict = [];
     var checkInDict = [];
 
@@ -243,4 +244,5 @@ function StolpicniGraf(pos, data) {
 
     return [checkOutDict, checkInDict];
   }
+  //transitionGrouped();
 }
