@@ -10,11 +10,11 @@ function StolpicniGraf(pos, data) {
       return d.y;
     });
   }),
-  yStackMax = d3.max(layers, function (layer) {
-    return d3.max(layer, function (d) {
-      return d.y0 + d.y;
+    yStackMax = d3.max(layers, function (layer) {
+      return d3.max(layer, function (d) {
+        return d.y0 + d.y;
+      });
     });
-  });
 
   var margin = {top: 20, right: 0, bottom: 20, left: 20},
     width = 800 - margin.left - margin.right,
@@ -27,7 +27,7 @@ function StolpicniGraf(pos, data) {
     var t = new Date(sedaj - i * 1800000);
     if (i % 2 === 0) {
       var xCas = new Date(sedaj - i * 1800000);
-      xLabels.push(("0" + xCas.getHours()).slice(-2) + ":" + ("0" + xCas.getMinutes()).slice(-2) );
+      xLabels.push(("0" + xCas.getHours()).slice(-2) + ":" + ("0" + xCas.getMinutes()).slice(-2));
     } else {
       xLabels.push("");
     }
@@ -52,7 +52,6 @@ function StolpicniGraf(pos, data) {
       return xLabels[d];
     })
     .orient("bottom");
-
 
   var yAxis = d3.svg.axis()
     .scale(y)
@@ -97,40 +96,23 @@ function StolpicniGraf(pos, data) {
       return y(d.y0) - y(d.y0 + d.y);
     });
 
-
   svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis);
 
-  svg.append("g")
-    .attr("class", "yaxis")
-    .call(yAxis);
-
-  /*
-  d3.selectAll("#zagraf").on("change", change);
-
-  var timeout = setTimeout(function () {
-    d3.select("input[value=\"grouped\"]").property("checked", true).each(change);
-  }, 3000);
-
-
-  function change() {
-    var vall = $("input[name=mode]:checked", "#zagraf").val();
-    clearTimeout(timeout);
-    if (vall === "grouped") transitionGrouped();
-    else transitionStacked();
-  }
-  */
-
   function transitionGrouped() {
     y.domain([0, yGroupMax]);
 
-    //d3.select(".yaxis").remove();
+    var yAxis2 = d3.svg.axis()
+      .scale(y)
+      .tickSize(0)
+      .tickPadding(6)
+      .orient("left");
 
     svg.append("g")
       .attr("class", "yaxis")
-      .call(yAxis);
+      .call(yAxis2);
 
     rect.transition()
       .duration(500)
@@ -150,38 +132,6 @@ function StolpicniGraf(pos, data) {
       });
   }
 
-  /*
-  function transitionStacked() {
-    y.domain([0, yStackMax]);
-
-    d3.select(".yaxis").remove();
-
-    svg.append("g")
-      .attr("class", "yaxis")
-      .call(yAxis);
-
-    rect.transition()
-      .duration(500)
-      .delay(function (d, i) {
-        return i * 10;
-      })
-      .attr("y", function (d) {
-        return y(d.y0 + d.y);
-      })
-      .attr("height", function (d) {
-        return y(d.y0) - y(d.y0 + d.y);
-      })
-      .transition()
-      .attr("x", function (d) {
-        return x(d.x);
-      })
-      .attr("width", x.rangeBand());
-  }
-  */
-
-
-  /*    UREDI TELE FUNKCIJE    */
-
   function razlikaCasov($cas1, $cas2) {
     var datum1 = new Date($cas1);
     var datum2 = new Date($cas2);
@@ -195,18 +145,8 @@ function StolpicniGraf(pos, data) {
 
     casi.forEach(function (date) {
       var preteklicCas = razlikaCasov(currentDate, date);
-
-      /*
-       console.log("\nČASI TEST:");
-       console.log("Trenutni cas: ", currentDate);
-       console.log("Podatni cas: ", date);
-       console.log("Razlika v urah: ", preteklicCas / 60 / 24)
-       */
-
-      if (preteklicCas <= 1440) { // minut v dnevu
+      if (preteklicCas <= 1440) { // 1440 je minut v dnevu
         vrni.push([preteklicCas, date]);
-      } else {
-        //vrni.push([preteklicCas, date]);
       }
     });
     return vrni;
@@ -241,8 +181,8 @@ function StolpicniGraf(pos, data) {
         }
       }
     }
-
     return [checkOutDict, checkInDict];
   }
-  //transitionGrouped();
+
+  transitionGrouped();
 }
